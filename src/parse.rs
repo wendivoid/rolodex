@@ -134,10 +134,19 @@ fn take_until_unescaped_newline(input: &str) -> IResult<&str, Cow<'_, str>, Verb
     Err(nom::Err::Incomplete(nom::Needed::Unknown))
 }
 
-named!(pub(crate) parse_name<&str, Cow<str>, VerboseError<&str>>, do_parse!(
+named!(pub(crate) _parse_name<&str, Cow<str>, VerboseError<&str>>, do_parse!(
     value: take_till1!(|x| x == ':' || x == '=' || x == ';') >>
     (value.into())
 ));
+
+pub(crate) fn parse_name(input: &str) -> IResult<&str, Cow<'_, str>, VerboseError<&str>> {
+    let (input, data) = _parse_name(input)?;
+    match data {
+        Cow::Borrowed("END") => Err(nom::Err::Error(VerboseError { errors: vec![(input, VerboseErrorKind::Context("Found END:VCARD tag"))]})),
+        Cow::Borrowed("BEGIN") => Err(nom::Err::Error(VerboseError { errors: vec![(input, VerboseErrorKind::Context("Found BEGIN:VCARD tag"))]})),
+        data => Ok((input, data.into()))
+    }
+}
 
 named!(pub(crate) parse_formatted_value<&str, Cow<'_, str>>, do_parse!(
     data: take_while1!(|x| !",;\n".contains(x)) >>

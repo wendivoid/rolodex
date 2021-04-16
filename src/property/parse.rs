@@ -1,13 +1,13 @@
 use nom::error::VerboseError;
-use nom::{alt, do_parse, named, tag, tag_no_case};
+use nom::{alt, do_parse, named, tag, tag_no_case, opt};
 
 use super::{parse_parameters, Property};
 use crate::parse::{parse_multiple_value, parse_name, parse_typed_value, parse_value};
 use crate::{Parameters, Value};
 
 named!(pub parse_property<&str, Property, VerboseError<&str>>, alt!(
-    parse_begin |
-    parse_end |
+//    parse_begin |
+//    parse_end |
     parse_logo |
     parse_source |
     parse_kind |
@@ -47,17 +47,21 @@ named!(pub parse_property<&str, Property, VerboseError<&str>>, alt!(
     parse_other
 ));
 
-named!(parse_begin<&str, Property, VerboseError<&str>>, do_parse!(
+named!(pub parse_begin<&str, Property, VerboseError<&str>>, do_parse!(
     tag_no_case!("BEGIN") >>
     tag!(":") >>
     tag_no_case!("VCARD") >>
+    opt!(tag!("\r")) >>
+    opt!(tag!("\n")) >>
     (Property { params: Parameters(vec![]), value: Value::Begin })
 ));
 
-named!(parse_end<&str, Property, VerboseError<&str>>, do_parse!(
+named!(pub parse_end<&str, Property, VerboseError<&str>>, do_parse!(
     tag_no_case!("END") >>
     tag!(":") >>
     tag_no_case!("VCARD") >>
+    opt!(tag!("\r")) >>
+    opt!(tag!("\n")) >>
     (Property { params: Parameters(vec![]), value: Value::End })
 ));
 
@@ -68,6 +72,7 @@ macro_rules! impl_simple_prop_parser {
             params: parse_parameters >>
             tag!(":") >>
             value: parse_value >>
+            opt!(tag!("\r")) >>
             (Property { params: Parameters(params), value: Value::$variant(value) })
         ));
     };
@@ -77,6 +82,7 @@ macro_rules! impl_simple_prop_parser {
             params: parse_parameters >>
             tag!(":") >>
             value: $value_func >>
+            opt!(tag!("\r")) >>
             (Property { params: Parameters(params), value: Value::$variant(value) })
         ));
     };

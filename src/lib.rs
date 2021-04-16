@@ -13,6 +13,9 @@ pub use self::property::{Parameter, Parameters, Property};
 mod vcard;
 pub use self::vcard::VCard;
 
+mod vcf;
+pub use self::vcf::Vcf;
+
 pub mod parse;
 pub use self::parse::{Parse, ParseError};
 

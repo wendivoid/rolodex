@@ -2,6 +2,7 @@ use nom::{error::VerboseError, IResult};
 
 use std::fmt;
 
+use crate::property::{ parse_end, parse_begin };
 use crate::{ Parse, ParseError, Property };
 
 #[derive(Debug, PartialEq, Clone)]
@@ -10,6 +11,7 @@ pub struct VCard<'a>(pub Vec<Property<'a>>);
 
 impl<'a> fmt::Display for VCard<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        writeln!(f, "BEGIN:VCARD\r")?;
         for (index, prop) in self.0.iter().enumerate() {
             if index == self.0.len() - 1 {
                 write!(f, "{}", prop)?;
@@ -17,6 +19,7 @@ impl<'a> fmt::Display for VCard<'a> {
                 writeln!(f, "{}", prop)?;
             }
         }
+        writeln!(f, "\r\nEND:VCARD\r")?;
         Ok(())
     }
 }
@@ -35,12 +38,24 @@ impl<'a> Parse<'a> for VCard<'a> {
     fn parse(mut input: &'a str) -> IResult<&'a str, Self, ParseError> {
         use nom::bytes::complete::tag;
         let mut properties = vec![];
+        match parse_begin(input) {
+            Ok((remains, _)) => input = remains,
+            Err(nom::Err::Incomplete(size)) => return Err(nom::Err::Incomplete(size)),
+            Err(nom::Err::Error(err)) => return Err(nom::Err::Error(err.into())),
+            Err(nom::Err::Failure(err)) => return Err(nom::Err::Failure(err.into()))
+        }
         while let Ok((remaining, prop)) = Parse::parse(input) {
             properties.push(prop);
             match tag::<&str, &str, VerboseError<&str>>("\n")(remaining) {
                 Ok((remaining, _)) => input = remaining,
                 Err(_) => input = remaining,
             }
+        }
+        match parse_end(input) {
+            Ok((remains, _)) => input = remains,
+            Err(nom::Err::Incomplete(size)) => return Err(nom::Err::Incomplete(size)),
+            Err(nom::Err::Error(err)) => return Err(nom::Err::Error(err.into())),
+            Err(nom::Err::Failure(err)) => return Err(nom::Err::Failure(err.into()))
         }
         Ok((input, VCard(properties)))
     }

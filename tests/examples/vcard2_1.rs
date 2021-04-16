@@ -16,7 +16,7 @@ ADR;HOME:;;42 Plantation St.;Baytown;LA;30314;United States of America
 LABEL;HOME;ENCODING=QUOTED-PRINTABLE;CHARSET=UTF-8:42 Plantation St.=0D=0A=\\n Baytown, LA 30314=0D=0AUnited States of America
 EMAIL:forrestgump@example.com
 REV:20080424T195243Z
-END:VCARD";
+END:VCARD\r\n";
 
 fn name() -> TypeOrRaw<FormattedName<'static>> {
     TypeOrRaw::Type(FormattedName {
@@ -54,7 +54,6 @@ fn address2() -> TypeOrRaw<Address<'static>> {
 
 fn expected() -> VCard<'static> {
     VCard(vec![
-        Property::builder().value(Value::Begin).build(),
         Property::builder()
             .value(Value::Version("2.1".into()))
             .build(),
@@ -145,7 +144,6 @@ fn expected() -> VCard<'static> {
         Property::builder()
             .value(Value::Rev("20080424T195243Z".into()))
             .build(),
-        Property::builder().value(Value::End).build(),
     ])
 }
 

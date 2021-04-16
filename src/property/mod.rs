@@ -9,7 +9,7 @@ pub use self::parameters::{parse_parameters, Parameters};
 use crate::Value;
 
 mod parse;
-pub use self::parse::parse_property;
+pub use self::parse::{parse_property, parse_begin, parse_end};
 
 #[derive(Debug, PartialEq, Clone)]
 #[cfg_attr(feature = "typed-builder", derive(typed_builder::TypedBuilder))]

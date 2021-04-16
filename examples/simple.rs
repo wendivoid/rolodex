@@ -25,9 +25,9 @@ fn main() {
             let mut raw_data = vec![];
             file.read_to_end(&mut raw_data).expect(&format!("Failed to read file `{}`", arg));
             let data = String::from_utf8_lossy(&raw_data);
-            match VCard::parse(&data) {
+            match Vcf::parse(&data) {
                 Err(err) => panic_error(&data, err),
-                Ok(item) => println!("{}", item)
+                Ok((_, item)) => println!("== VCard Count {} ==\n{}", item.0.len(), item)
             }
         }
     } else {

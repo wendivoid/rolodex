@@ -17,7 +17,7 @@ TEL;TYPE=HOME,VOICE:312-555-1313
 TEL;TYPE=WORK,VOICE:312-555-1212
 TEL;TYPE=HOME,FAX:312-555-1616
 TEL;TYPE=WORK,FAX:312-555-1717
-END:VCARD";
+END:VCARD\r\n";
 
 fn name() -> TypeOrRaw<FormattedName<'static>> {
     TypeOrRaw::Type(FormattedName {
@@ -31,7 +31,6 @@ fn name() -> TypeOrRaw<FormattedName<'static>> {
 
 fn expected() -> VCard<'static> {
     VCard(vec![
-        Property::builder().value(Value::Begin).build(),
         Property::builder()
             .value(Value::Version("3.0".into()))
             .build(),
@@ -146,7 +145,6 @@ fn expected() -> VCard<'static> {
                 .build()]))
             .value(Value::Tel("312-555-1717".into()))
             .build(),
-        Property::builder().value(Value::End).build(),
     ])
 }
 

@@ -2,14 +2,14 @@ use rolodex::*;
 
 #[test]
 fn simple() {
-    assert_eq!(
-        ("\n", Property::builder().value(Value::Begin).build()),
-        Parse::parse("BEGIN:VCARD\n").unwrap()
-    );
-    assert_eq!(
-        ("\n", Property::builder().value(Value::End).build()),
-        Parse::parse("END:VCARD\n").unwrap()
-    );
+    // assert_eq!(
+    //     ("\n", Property::builder().value(Value::Begin).build()),
+    //     Parse::parse("BEGIN:VCARD\n").unwrap()
+    // );
+    // assert_eq!(
+    //     ("\n", Property::builder().value(Value::End).build()),
+    //     Parse::parse("END:VCARD\n").unwrap()
+    // );
     assert_eq!(
         (
             "\n",

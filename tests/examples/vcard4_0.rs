@@ -15,7 +15,7 @@ ADR;TYPE=HOME;LABEL=\"42 Plantation St.\nBaytown\\, LA 30314\nUnited States of A
 EMAIL:forrestgump@example.com
 REV:20080424T195243Z
 x-qq:21588891
-END:VCARD";
+END:VCARD\r\n";
 
 fn name() -> TypeOrRaw<FormattedName<'static>> {
     TypeOrRaw::Type(FormattedName {
@@ -53,7 +53,6 @@ fn address2() -> TypeOrRaw<Address<'static>> {
 
 fn expected() -> VCard<'static> {
     VCard(vec![
-        Property::builder().value(Value::Begin).build(),
         Property::builder()
             .value(Value::Version("4.0".into()))
             .build(),
@@ -135,7 +134,6 @@ fn expected() -> VCard<'static> {
         Property::builder()
             .value(Value::Other("x-qq".into(), "21588891".into()))
             .build(),
-        Property::builder().value(Value::End).build(),
     ])
 }
 

@@ -1,5 +1,5 @@
 # rolodex
-  A forgivable VCard parser for rust based on [RFC6350](https://tools.ietf.org/html/rfc6350).
+  **[WIP]** A forgivable VCard parser for rust based on [RFC6350](https://tools.ietf.org/html/rfc6350).
 ### Crate features
 All library features are enabled by default
   - `serde` serde support
