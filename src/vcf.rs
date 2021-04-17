@@ -11,7 +11,7 @@ impl <'a>fmt::Display for Vcf<'a> {
         let data = self.0.iter()
             .map(|x|format!("{}", x))
             .collect::<Vec<String>>()
-            .join("\n");
+            .join("\r\n");
         write!(f, "{}", data)
     }
 }

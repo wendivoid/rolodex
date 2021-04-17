@@ -11,15 +11,11 @@ pub struct VCard<'a>(pub Vec<Property<'a>>);
 
 impl<'a> fmt::Display for VCard<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        writeln!(f, "BEGIN:VCARD\r")?;
-        for (index, prop) in self.0.iter().enumerate() {
-            if index == self.0.len() - 1 {
-                write!(f, "{}", prop)?;
-            } else {
-                writeln!(f, "{}", prop)?;
-            }
-        }
-        writeln!(f, "\r\nEND:VCARD\r")?;
+        let data = self.0.iter()
+            .map(|x|format!("{}", x))
+            .collect::<Vec<String>>()
+            .join("\r\n");
+        write!(f, "BEGIN:VCARD\r\n{}\r\nEND:VCARD", data)?;
         Ok(())
     }
 }

@@ -19,3 +19,8 @@ TEL;TYPE=WORK,MSG:+1-734-542-5955
 EMAIL;TYPE=INTERNET:ganguly@acm.org
 END:VCARD
 BEGIN:VCARD
+VERSION:3.0
+N:Moskowitz;Robert
+FN:Robert Moskowitz
+EMAIL;TYPE=INTERNET:rgm-ietf@htt-consult.com
+END:VCARD

@@ -35,6 +35,6 @@ impl<'a> Parse<'a> for Email<'a> {
 named!(parse_email<&str, Email>, do_parse!(
     user: take_until!("@") >>
     tag!("@") >>
-    domain: take_while!(|x| is_alphanumeric(x as u8) || x == '.') >>
+    domain: take_while!(|x| is_alphanumeric(x as u8) || "_-.".contains(x)) >>
     (Email { user: user.into(), domain: domain.into() })
 ));
