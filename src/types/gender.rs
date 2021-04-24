@@ -28,7 +28,7 @@ impl fmt::Display for Sex {
 }
 
 impl<'a> Parse<'a> for Sex {
-    fn parse(input: &'a str) -> IResult<&str, Sex, ParseError> {
+    fn parse(input: &'a str) -> IResult<&'a str, Sex, ParseError> {
         parse_sex(input).map_err(|c| match c {
             nom::Err::Error(err) => nom::Err::Error(err.into()),
             nom::Err::Failure(err) => nom::Err::Failure(err.into()),

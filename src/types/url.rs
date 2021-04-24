@@ -50,7 +50,7 @@ impl<'a> fmt::Display for Url<'a> {
 }
 
 impl<'a> Parse<'a> for Url<'a> {
-    fn parse(input: &str) -> IResult<&str, Url, ParseError> {
+    fn parse(input: &'a str) -> IResult<&'a str, Url<'a>, ParseError> {
         parse_url(input).map_err(|c| match c {
             nom::Err::Error(err) => nom::Err::Error(err.into()),
             nom::Err::Failure(err) => nom::Err::Failure(err.into()),

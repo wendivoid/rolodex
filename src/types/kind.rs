@@ -25,7 +25,7 @@ impl fmt::Display for Kind {
 }
 
 impl<'a> Parse<'a> for Kind {
-    fn parse(input: &str) -> IResult<&str, Kind, ParseError> {
+    fn parse(input: &'a str) -> IResult<&'a str, Kind, ParseError> {
         parse_kind(input).map_err(|c| match c {
             nom::Err::Error(err) => nom::Err::Error(crate::parse::to_parse_error(input, err)),
             nom::Err::Failure(err) => nom::Err::Failure(crate::parse::to_parse_error(input, err)),

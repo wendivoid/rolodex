@@ -12,5 +12,7 @@ fn name() -> types::Url<'static> {
 
 #[test]
 fn simple() {
+    assert_eq!(Ok(("\n", name())), Parse::parse(&format!("{}", DATA)));
     assert_eq!(Ok(("\n", name())), Parse::parse(DATA));
+    assert_eq!(Ok(("\n", TypeOrRaw::Type(name()))), TypeOrRaw::<types::Url>::parse(DATA));
 }

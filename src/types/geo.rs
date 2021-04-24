@@ -15,7 +15,7 @@ impl fmt::Display for GeoPosition {
 }
 
 impl<'a> Parse<'a> for GeoPosition {
-    fn parse(input: &str) -> IResult<&str, GeoPosition, ParseError> {
+    fn parse(input: &'a str) -> IResult<&'a str, GeoPosition, ParseError> {
         parse_geo_position(input).map_err(|c| match c {
             nom::Err::Error(err) => nom::Err::Error(crate::parse::to_parse_error(input, err)),
             nom::Err::Failure(err) => nom::Err::Failure(crate::parse::to_parse_error(input, err)),

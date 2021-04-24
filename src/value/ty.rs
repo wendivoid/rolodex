@@ -1,7 +1,10 @@
+use nom::IResult;
+
 use std::borrow::Cow;
 use std::fmt::{Debug, Display, Formatter, Result};
 
 use super::PropertyValue;
+use crate::{ Parse, ParseError };
 
 /// Represents Either a type or a raw value read from the vcard data.
 #[derive(Debug, PartialEq, Clone)]
@@ -10,6 +13,20 @@ use super::PropertyValue;
 pub enum TypeOrRaw<T: PropertyValue> {
     Type(T),
     Raw(Cow<'static, str>),
+}
+
+impl<'a, T> Parse<'a> for TypeOrRaw<T>
+where
+    T: Parse<'a> + PropertyValue
+{
+    fn parse(input: &'a str) -> IResult<&'a str, Self, ParseError> {
+        match crate::parse::parse_typed_value(input) {
+            Err(nom::Err::Failure(err)) => Err(nom::Err::Failure(ParseError(err))),
+            Err(nom::Err::Error(err)) => Err(nom::Err::Error(ParseError(err))),
+            Err(nom::Err::Incomplete(item)) => Err(nom::Err::Incomplete(item)),
+            Ok((remains, item)) => Ok((remains, item)),
+        }
+    }
 }
 
 impl<T: PropertyValue> TypeOrRaw<T> {

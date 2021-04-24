@@ -23,7 +23,7 @@ impl<'a> fmt::Display for Email<'a> {
 }
 
 impl<'a> Parse<'a> for Email<'a> {
-    fn parse(input: &str) -> IResult<&str, Email, ParseError> {
+    fn parse(input: &'a str) -> IResult<&'a str, Email, ParseError> {
         parse_email(input).map_err(|c| match c {
             nom::Err::Error(err) => nom::Err::Error(crate::parse::to_parse_error(input, err)),
             nom::Err::Failure(err) => nom::Err::Failure(crate::parse::to_parse_error(input, err)),

@@ -62,7 +62,7 @@ impl<'a> Parse<'a> for std::borrow::Cow<'a, str> {
     }
 }
 
-/// Parse a type that implementes `[Parse](./trait.Parse.html)`.
+/// Parse a type that implementes [`Parse`](./trait.Parse.html).
 // TODO: Remove this call to ToString::to_string it unecessarily converts into string negating
 // the usage of `Cow`.
 // error[E0759]: `input` has lifetime `'de` but it needs to satisfy a `'static` lifetime requirement

@@ -29,7 +29,7 @@ impl<'a> fmt::Display for Image<'a> {
 }
 
 impl<'a> Parse<'a> for Image<'a> {
-    fn parse(input: &str) -> IResult<&str, Image<'_>, ParseError> {
+    fn parse(input: &'a str) -> IResult<&'a str, Image<'_>, ParseError> {
         parse_image(input).map_err(|c| match c {
             nom::Err::Error(err) => nom::Err::Error(err.into()),
             nom::Err::Failure(err) => nom::Err::Failure(err.into()),
